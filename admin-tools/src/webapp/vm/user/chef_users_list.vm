@@ -80,7 +80,7 @@
 				<tr>
 					<th id="Eid">$tlang.getString("useconrem.useid")</th>
 					<th id="Name">$tlang.getString("useconrem.nam")</th>
-					<th id="School">$tlang.getString("useconrem.sch")</th>
+					<th id="School">$tlang.getString("useconrem.schnam")</th>
 					<th id="Email">$tlang.getString("useconrem.ema")</th>
 					<th id="Type" class="hidden-xs">$tlang.getString("usecre.typ")</th>
 					<th id="Status" class="hidden-xs">$tlang.getString("usecre.status")</th>
