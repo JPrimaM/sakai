@@ -1209,9 +1209,8 @@ public class SakaiBLTIUtil {
 			String incoming_kid = (String) jsonHeader.get("kid");
 
 			String tool_keyset = (String) tool.get(LTIService.LTI13_TOOL_KEYSET);
-			String tool_public = (String) tool.get(LTIService.LTI13_TOOL_PUBLIC);
-			if (tool_keyset == null && tool_public == null) {
-				throw new RuntimeException("Could not find tool keyset url or stored public key");
+			if (tool_keyset == null) {
+				throw new RuntimeException("Could not find tool keyset url");
 			}
 
 			Key publicKey = null;
@@ -1228,11 +1227,6 @@ public class SakaiBLTIUtil {
 				}
 				// TODO: Store in Earle's super-cluster-cache one day - SAK-43700
 
-			} else {
-				publicKey = LTI13Util.string2PublicKey(tool_public);
-				if (publicKey == null) {
-					throw new RuntimeException("Could not deserialize tool public key");
-				}
 			}
 			return publicKey;
 		}
@@ -1437,6 +1431,8 @@ public class SakaiBLTIUtil {
 			if ( StringUtils.isNotEmpty(relaunch_url) ) setProperty(ltiProps, "relaunch_url", relaunch_url);
 
 			Map<String, String> extra = new HashMap<>();
+			extra.put(BasicLTIUtil.EXTRA_ERROR_TIMEOUT, rb.getString("error.submit.timeout"));
+			extra.put(BasicLTIUtil.EXTRA_HTTP_POPUP, BasicLTIUtil.EXTRA_HTTP_POPUP_FALSE);  // Don't bother oening in new window in protocol mismatch
 			ltiProps = BasicLTIUtil.signProperties(ltiProps, launch_url, "POST",
 					consumerkey, secret, extra);
 
@@ -1546,6 +1542,7 @@ public class SakaiBLTIUtil {
 			addConsumerData(ltiProps, null);
 
 			Map<String, String> extra = new HashMap<>();
+			extra.put(BasicLTIUtil.EXTRA_ERROR_TIMEOUT, rb.getString("error.submit.timeout"));
 			ltiProps = BasicLTIUtil.signProperties(ltiProps, launch_url, "POST", key, secret, extra);
 
 			if (ltiProps == null) {
@@ -1934,7 +1931,11 @@ public class SakaiBLTIUtil {
 			html += "    </form>\n";
 
 			if ( ! dodebug ) {
-				html += "<script>\n document.getElementById(\"" + form_id + "\").submit();\n</script>\n";
+				String launch_error = rb.getString("error.submit.timeout")+" "+launch_url;
+				html += "<script>\n";
+				html += "setTimeout(document.getElementById(\"" + form_id + "\").submit();\n";
+				html += "setTimeout(function() { alert(\""+BasicLTIUtil.htmlspecialchars(launch_error)+"\"); }, 4000);\n";
+				html += "</script>\n";
 			} else {
 				html += "<p>\n--- Unencoded JWT:<br/>"
 						+ BasicLTIUtil.htmlspecialchars(ljs)
