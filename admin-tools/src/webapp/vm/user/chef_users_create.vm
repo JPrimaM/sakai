@@ -82,7 +82,7 @@ ${includeLatestJQuery}
 				</div>
 				<div class="col-sm-offset-2 col-sm-10" id="emailWarningMsg" style="display:none">
 					<div class="validationAlert sak-banner-error">
-						$tlang.getString("useact.invemail")
+						$tlang.getString("useact.	invemail")
 					</div>
 				</div>
 			</div>
