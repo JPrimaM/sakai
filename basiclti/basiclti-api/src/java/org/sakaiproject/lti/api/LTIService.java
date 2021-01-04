@@ -130,12 +130,13 @@ public interface LTIService extends LTISubstitutionsFilter {
             "pl_launch:checkbox:label=bl_pl_launch",
             "pl_linkselection:checkbox:label=bl_pl_linkselection",
             // SAK-44637 - re-enable pl_lessonsselection
-            "pl_placement:header:fields=pl_lessonsselection,pl_assessmentselection,pl_content_editor,pl_importitem,pl_fileitem",
+            "pl_placement:header:fields=pl_lessonsselection,pl_assessmentselection,pl_content_editor,pl_importitem,pl_coursenav,pl_privacy,pl_fileitem,",
             "pl_lessonsselection:checkbox:label=bl_pl_lessonsselection",
             "pl_assessmentselection:checkbox:label=bl_pl_assessmentselection",
             "pl_contenteditor:checkbox:label=bl_pl_contenteditor",
             "pl_privacy:checkbox:label=bl_pl_privacy:role=admin",
             "pl_importitem:checkbox:label=bl_pl_importitem:role=admin",
+            "pl_coursenav:checkbox:label=bl_pl_coursenav:role=admin:hidden=true",
             "pl_fileitem:checkbox:label=bl_pl_fileitem:role=admin",
             "newpage:radio:label=bl_newpage:choices=off,on,content",
             "debug:radio:label=bl_debug:choices=off,on,content",
@@ -153,12 +154,15 @@ public interface LTIService extends LTISubstitutionsFilter {
             "lti13_oidc_endpoint:text:label=bl_lti13_oidc_endpoint:maxlength=1024:role=admin",
             "lti13_oidc_redirect:text:label=bl_lti13_oidc_redirect:maxlength=1024:role=admin",
 
-            "lti13_platform_public:textarea:hide=insert:label=bl_lti13_platform_public:maxlength=1M:role=admin",
+            "lti13_platform_public:textarea:hidden=true:label=bl_lti13_platform_public:maxlength=1M:role=admin",
             "lti13_platform_private:textarea:hidden=true:label=bl_lti13_platform_private:maxlength=1M:role=admin",
             "lti13_settings:textarea:hidden=true:maxlength=1M:role=admin",
 
             "lti11_launch_type:radio:label=bl_lti11_launch_type:role=admin:choices=inherit,legacy,lti112",
             "xmlimport:textarea:hidden=true:maxlength=1M",
+            "lti13_auto_token:text:hidden=true:maxlength=1024",
+            "lti13_auto_state:integer:hidden=true",
+            "lti13_auto_registration:textarea:hidden=true:maxlength=1M",
             "created_at:autodate",
             "updated_at:autodate"};
 
@@ -211,6 +215,9 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI_CUSTOM = "custom";
     String LTI_ROLEMAP = "rolemap";
     String LTI_SPLASH = "splash";
+    String LTI13_AUTO_TOKEN = "lti13_auto_token";
+    String LTI13_AUTO_STATE = "lti13_auto_state";
+    String LTI13_AUTO_REGISTRATION = "lti13_auto_registration";
     String LTI_XMLIMPORT = "xmlimport";
     String LTI_CREATED_AT = "created_at";
     String LTI_UPDATED_AT = "updated_at";
@@ -244,6 +251,7 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI_PL_CONTENTEDITOR = "pl_contenteditor";
     String LTI_PL_ASSESSMENTSELECTION = "pl_assessmentselection";
     String LTI_PL_LESSONSSELECTION = "pl_lessonsselection";
+    String LTI_PL_COURSENAV = "pl_coursenav";
     String LTI_SEARCH_TOKEN_SEPARATOR_AND = "#&#";
     String LTI_SEARCH_TOKEN_SEPARATOR_OR = "#|#";
     String ESCAPED_LTI_SEARCH_TOKEN_SEPARATOR_AND = "\\#\\&\\#";
