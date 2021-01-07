@@ -110,7 +110,7 @@ function removeOptionalAttributeBlock(elem) {
            				$tlang.getString("usecre.schnam")
        				</label>
        				<div class="col-sm-3">
-           				<input class="form-control sakai-glow" type="text" name="school-name" id="school-name" placeholder="$tlang.getString("usecre.schnam.placeholder")" autocomplete="family-name"/>
+           				<input class="form-control sakai-glow" type="text" name="school-name" id="school-name" placeholder="$tlang.getString("usecre.schnam.placeholder")" autocomplete="family-name" value="$formattedText.escapeHtml/>
        				</div>
    				</div>
 

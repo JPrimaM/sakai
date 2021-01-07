@@ -63,6 +63,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.event.api.SessionState;
 import org.sakaiproject.event.api.UsageSessionService;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.portal.util.PortalUtils;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
@@ -75,6 +76,9 @@ import org.sakaiproject.user.api.Authentication;
 import org.sakaiproject.user.api.AuthenticationException;
 import org.sakaiproject.user.api.AuthenticationManager;
 import org.sakaiproject.user.api.Evidence;
+import org.sakaiproject.user.api.Preferences;
+import org.sakaiproject.user.api.PreferencesEdit;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserAlreadyDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -159,6 +163,7 @@ public class UsersAction extends PagedResourceActionII
 	private ThreadLocalManager threadLocalManager;
 	private UserTimeService userTimeService;
 	private PasswordFactory passwordFactory;
+	private PreferencesService preferencesService;
 	
 	public UsersAction() {
 		super();
@@ -1228,6 +1233,8 @@ public class UsersAction extends PagedResourceActionII
 		state.setAttribute("valueFirstName", firstName);
 		String lastName = StringUtils.trimToNull(data.getParameters().getString("last-name"));
 		state.setAttribute("valueLastName", lastName);
+		String schoolName = StringUtils.trimToNull(data.getParameters().getString("school-name"));
+		state.setAttribute("valueSchool", schoolName);
 		String email = StringUtils.trimToNull(data.getParameters().getString("email"));
 		state.setAttribute("valueEmail", email);
 		String pw = StringUtils.trimToNull(data.getParameters().getString("pw"));
@@ -1449,6 +1456,29 @@ public class UsersAction extends PagedResourceActionII
 				}
 				else
 				{
+					try {
+						
+						Preferences prefs = preferencesService.getPreferences(eid);
+				        if(null!=prefs.getProperties().getProperty("school")) {
+				        	String pref1 = prefs.getProperties().getProperty("school");
+				        	System.out.print("--------> "+pref1);
+				        }
+				       
+		                PreferencesEdit pe = null;
+		                try {
+		                    pe = preferencesService.edit(eid);
+		                } catch(IdUnusedException idue) {
+		                    pe = preferencesService.add(eid);
+		                }
+		           
+		                pe.getPropertiesEdit().addProperty("school", schoolName);
+		                preferencesService.commit(pe);
+		                
+		                
+					} catch(Exception e) {
+		                log.error("Failed to setup property",e);
+		            }
+					
 					newUser = userDirectoryService.addUser(id, eid, firstName, lastName, email, pw, type, properties);
 
 					if (securityService.isSuperUser()) {
